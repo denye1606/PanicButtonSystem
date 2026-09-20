@@ -19,30 +19,30 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      - name: Install XcodeGen
+        run: brew install xcodegen
 
       - name: Build Shared KMP Framework
         run: ./gradlew :composeApp:assembleComposeAppReleaseFramework
 
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build iOS App
+        run: |
+          xcodebuild -project PanicButton.xcodeproj \
+                     -scheme iosApp \
+                     -configuration Release \
+                     -sdk iphoneos \
+                     -derivedDataPath build \
+                     CODE_SIGN_IDENTITY="" \
+                     CODE_SIGNING_REQUIRED=NO \
+                     CODE_SIGNING_ALLOWED=NO \
+                     clean build
+
       - name: Archive Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ios-framework-bundle
-          path: composeApp/build/fat-framework/release/ComposeApp.framework
+          name: PanicButton-iPhone-App
+          path: build/Build/Products/Release-iphoneos/iosApp.app
           retention-days: 7
-
-      - name: Documentation for Windows Users
-        run: |
-          echo "### Build Successful!" >> $GITHUB_STEP_SUMMARY
-          echo "To install on your iPhone from Windows:" >> $GITHUB_STEP_SUMMARY
-          echo "1. Download the 'ios-framework-bundle' artifact from this run." >> $GITHUB_STEP_SUMMARY
-          echo "2. Use the provided Swift files in 'iosApp/' to bundle the final app." >> $GITHUB_STEP_SUMMARY
-          echo "3. Use Sideloadly to sign and install on your device." >> $GITHUB_STEP_SUMMARY
