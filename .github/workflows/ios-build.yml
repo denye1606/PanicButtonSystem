@@ -19,30 +19,46 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Make Gradlew Executable
+        run: chmod +x gradlew
+
       - name: Install XcodeGen
         run: brew install xcodegen
 
-      - name: Build Shared KMP Framework
-        run: ./gradlew :composeApp:assembleComposeAppReleaseFramework
+      - name: Build Android App (Verification)
+        run: ./gradlew :composeApp:assembleDebug
+
+      - name: Build iOS Framework
+        run: ./gradlew :composeApp:linkReleaseFrameworkIosArm64
 
       - name: Generate Xcode Project
         run: xcodegen generate
 
-      - name: Build iOS App
+      - name: Build iOS App Bundle
         run: |
           xcodebuild -project PanicButton.xcodeproj \
                      -scheme iosApp \
                      -configuration Release \
                      -sdk iphoneos \
-                     -derivedDataPath build \
-                     CODE_SIGN_IDENTITY="" \
-                     CODE_SIGNING_REQUIRED=NO \
+                     -derivedDataPath build_output \
                      CODE_SIGNING_ALLOWED=NO \
+                     CODE_SIGNING_REQUIRED=NO \
+                     CODE_SIGN_IDENTITY="" \
                      clean build
 
       - name: Archive Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: PanicButton-iPhone-App
-          path: build/Build/Products/Release-iphoneos/iosApp.app
+          path: build_output/Build/Products/Release-iphoneos/iosApp.app
           retention-days: 7

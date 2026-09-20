@@ -10,4 +10,4 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.example.panicbutton
     dependencies:
-      - framework: composeApp/build/fat-framework/release/ComposeApp.framework
+      - framework: composeApp/build/bin/iosArm64/releaseFramework/ComposeApp.framework
