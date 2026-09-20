@@ -1,0 +1,6 @@
+- [x] Define `SoundType` enum and patterns in `MainActivity.kt`
+- [x] Add `selectedSound` state to `MainActivity`
+- [x] Implement `SoundSettingsDialog` composable
+- [x] Add settings icon and logic to `MainDashboard`
+- [x] Refactor alarm trigger logic to use selected sound
+- [x] Verify all sound patterns play and stop correctly

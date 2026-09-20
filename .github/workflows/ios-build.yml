@@ -1,0 +1,48 @@
+name: iOS Cloud Build
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build Shared KMP Framework
+        run: ./gradlew :composeApp:assembleComposeAppReleaseFramework
+
+      - name: Archive Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-framework-bundle
+          path: composeApp/build/fat-framework/release/ComposeApp.framework
+          retention-days: 7
+
+      - name: Documentation for Windows Users
+        run: |
+          echo "### Build Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "To install on your iPhone from Windows:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Download the 'ios-framework-bundle' artifact from this run." >> $GITHUB_STEP_SUMMARY
+          echo "2. Use the provided Swift files in 'iosApp/' to bundle the final app." >> $GITHUB_STEP_SUMMARY
+          echo "3. Use Sideloadly to sign and install on your device." >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "801043646002",
+    "firebase_url": "https://panic-button-10305-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "panic-button-10305",
+    "storage_bucket": "panic-button-10305.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801043646002:android:fbd27266d727737a0a9e2b",
+        "android_client_info": {
+          "package_name": "com.example.panicbutton"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRRg1M3MulQWngegfKAzjujfXKDdJgiQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
