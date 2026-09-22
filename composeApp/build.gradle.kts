@@ -54,14 +54,10 @@ kotlin {
             implementation(libs.androidx.constraintlayout)
         }
         
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain.get())
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
+        val iosMain by getting {
+            dependencies {
+                // Shared iOS-specific dependencies can go here
+            }
         }
     }
 }
