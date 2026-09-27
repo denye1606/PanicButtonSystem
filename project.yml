@@ -12,6 +12,8 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.example.panicbutton
       FRAMEWORK_SEARCH_PATHS: $(inherited) "$(SRCROOT)/composeApp/build/bin/iosSimulatorArm64/releaseFramework"
+      ONLY_ACTIVE_ARCH: "YES"
+      ARCHS: "arm64"
       CODE_SIGNING_ALLOWED: "NO"
       CODE_SIGNING_REQUIRED: "NO"
     dependencies:
