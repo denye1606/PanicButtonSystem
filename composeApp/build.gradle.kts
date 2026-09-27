@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -54,10 +53,8 @@ kotlin {
             implementation(libs.androidx.constraintlayout)
         }
         
-        val iosMain by getting {
-            dependencies {
-                // Shared iOS-specific dependencies can go here
-            }
+        iosMain.dependencies {
+            // Shared iOS-specific dependencies can go here
         }
     }
 }
