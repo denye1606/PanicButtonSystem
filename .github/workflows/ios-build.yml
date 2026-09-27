@@ -25,8 +25,8 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
-      - name: Build iOS Framework
-        run: ./gradlew :composeApp:linkReleaseFrameworkIosArm64 --no-daemon --stacktrace --info
+      - name: Build iOS Frameworks
+        run: ./gradlew :composeApp:linkReleaseFrameworkIosArm64 :composeApp:linkReleaseFrameworkIosSimulatorArm64 --no-daemon --stacktrace
 
       - name: Generate Xcode Project
         run: xcodegen generate
@@ -37,16 +37,25 @@ jobs:
                      -scheme iosApp \
                      -configuration Release \
                      -sdk iphoneos \
-                     -derivedDataPath build_output \
+                     -destination 'generic/platform=iOS' \
                      CODE_SIGNING_ALLOWED=NO \
                      CODE_SIGNING_REQUIRED=NO \
                      CODE_SIGN_IDENTITY="" \
                      AD_HOC_CODE_SIGNING_ALLOWED=YES \
+                     clean build || \
+          xcodebuild -project PanicButton.xcodeproj \
+                     -scheme iosApp \
+                     -configuration Release \
+                     -sdk iphonesimulator \
+                     -destination 'generic/platform=iOS Simulator' \
+                     CODE_SIGNING_ALLOWED=NO \
+                     CODE_SIGNING_REQUIRED=NO \
+                     CODE_SIGN_IDENTITY="" \
                      clean build
 
       - name: Archive Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: PanicButton-iPhone-App
-          path: build_output/Build/Products/Release-iphoneos/
+          path: build_output/Build/Products/
           retention-days: 7
