@@ -25,6 +25,9 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
+      - name: Build iOS Simulator Framework
+        run: ./gradlew :composeApp:linkReleaseFrameworkIosSimulatorArm64 --no-daemon --stacktrace
+
       - name: Generate Xcode Project
         run: xcodegen generate
 

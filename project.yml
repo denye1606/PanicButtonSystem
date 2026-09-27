@@ -11,12 +11,9 @@ targets:
     sources: [iosApp/iosApp]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.example.panicbutton
-      FRAMEWORK_SEARCH_PATHS: $(inherited) "$(BUILT_PRODUCTS_DIR)"
-      OTHER_LDFLAGS: $(inherited) -framework "ComposeApp"
+      FRAMEWORK_SEARCH_PATHS: $(inherited) "$(SRCROOT)/composeApp/build/bin/iosSimulatorArm64/releaseFramework"
       CODE_SIGNING_ALLOWED: "NO"
       CODE_SIGNING_REQUIRED: "NO"
-    scripts:
-      - name: Compile Kotlin Framework
-        script: |
-          cd "$SRCROOT"
-          ./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
+    dependencies:
+      - framework: composeApp/build/bin/iosSimulatorArm64/releaseFramework/ComposeApp.framework
+        embed: true
