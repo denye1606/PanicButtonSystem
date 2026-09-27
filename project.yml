@@ -11,6 +11,8 @@ targets:
     sources: [iosApp/iosApp]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.example.panicbutton
+      FRAMEWORK_SEARCH_PATHS: $(inherited) "$(BUILT_PRODUCTS_DIR)"
+      OTHER_LDFLAGS: $(inherited) -framework "ComposeApp"
       CODE_SIGNING_ALLOWED: "NO"
       CODE_SIGNING_REQUIRED: "NO"
     scripts:
