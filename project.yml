@@ -11,10 +11,10 @@ targets:
     sources: [iosApp/iosApp]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.example.panicbutton
-      FRAMEWORK_SEARCH_PATHS: $(inherited) "$(SRCROOT)/composeApp/build/bin/iosArm64/releaseFramework"
-      ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
       CODE_SIGNING_ALLOWED: "NO"
       CODE_SIGNING_REQUIRED: "NO"
-    dependencies:
-      - framework: composeApp/build/bin/iosArm64/releaseFramework/ComposeApp.framework
-        embed: true
+    scripts:
+      - name: Compile Kotlin Framework
+        script: |
+          cd "$SRCROOT"
+          ./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
